@@ -12,7 +12,7 @@ const conferenceTickets = 50
 var conferenceName = "Music Show"
 var remainingTickets int = 50
 
-// Declared a struct for
+// Declared a struct
 var bookings = make([]UserData, 0)
 
 type UserData struct {
@@ -34,7 +34,8 @@ func main() {
 		if isValidFirstName && isValidLastName && isValidEmail && isValidTickets {
 
 			bookTicket(userTickets, firstName, lastName, email)
-			sendTicket(userTickets, firstName, lastName, email)
+			//creates a new goroutine
+			go sendTicket(userTickets, firstName, lastName, email)
 
 			firstNames := getFirstNames()
 			fmt.Printf("The first names of bookings: %v\n", firstNames)
@@ -70,14 +71,12 @@ func main() {
 
 }
 
-// function to print greet users
 func greetUsers() {
 	fmt.Printf("Welcome to our %v booking application\n", conferenceName)
 	fmt.Printf("We have total of %v tickets and %v tickets are still available\n", conferenceTickets, remainingTickets)
 	fmt.Printf("Book your tickets here for the %v\n", conferenceName)
 }
 
-// function to get the first names of the bookings to maintain privacy of the users
 func getFirstNames() []string {
 	firstNames := []string{}
 
@@ -90,7 +89,6 @@ func getFirstNames() []string {
 
 }
 
-// function to get user input
 func getUserInput() (string, string, string, int) {
 
 	var firstName string
@@ -116,7 +114,7 @@ func getUserInput() (string, string, string, int) {
 func bookTicket(userTickets int, firstName string, lastName string, email string) {
 	remainingTickets = remainingTickets - userTickets
 
-	// create a struct for a user storing all their details
+	// create a struct for a user for storing all their details
 	var userData = UserData{
 		FirstName:       firstName,
 		LastName:        lastName,
@@ -132,7 +130,7 @@ func bookTicket(userTickets int, firstName string, lastName string, email string
 }
 
 func sendTicket(userTickets int, firstName string, lastName string, email string) {
-	time.Sleep(5 * time.Second)
+	time.Sleep(50 * time.Second)
 	var ticket = fmt.Sprintf("Booked %v tickets for %v %v", userTickets, firstName, lastName)
 	fmt.Println("################")
 	fmt.Printf("Sending ticket:\n%v \nTo %v\n", ticket, email)
