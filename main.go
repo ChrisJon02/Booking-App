@@ -9,7 +9,7 @@ const conferenceTickets = 50
 var conferenceName = "Music Show"
 var remainingTickets int = 50
 
-// Declared a struct
+// Declared a struct for
 var bookings = make([]UserData, 0)
 
 type UserData struct {
@@ -31,6 +31,8 @@ func main() {
 		if isValidFirstName && isValidLastName && isValidEmail && isValidTickets {
 
 			bookTicket(userTickets, firstName, lastName, email)
+			sendTicket(userTickets, firstName, lastName, email)
+
 			firstNames := getFirstNames()
 			fmt.Printf("The first names of bookings: %v\n", firstNames)
 
@@ -124,9 +126,11 @@ func bookTicket(userTickets int, firstName string, lastName string, email string
 
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation mail at %v\n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets are remaining for the %v\n", remainingTickets, conferenceName)
+}
 
-<<<<<<< HEAD
-=======
-	
->>>>>>> ca33a4ec48e4c2335d284da04e4c85c9d7515923
+func sendTicket(userTickets int, firstName string, lastName string, email string) {
+	var ticket = fmt.Sprintf("Booked %v tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Println("################")
+	fmt.Printf("Sending ticket:\n%v \nTo %v\n", ticket, email)
+	fmt.Println("################")
 }
