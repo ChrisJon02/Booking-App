@@ -26,7 +26,7 @@ func main() {
 
 		if isValidFirstName && isValidLastName && isValidEmail && isValidTickets {
 
-			bookings = bookTicket(userTickets, bookings, firstName, lastName, email)
+			bookTicket(userTickets, firstName, lastName, email)
 			firstNames := getFirstNames()
 			fmt.Printf("The first names of bookings: %v\n", firstNames)
 
@@ -104,7 +104,7 @@ func getUserInput() (string, string, string, int) {
 	return firstName, lastName, email, userTickets
 }
 
-func bookTicket(userTickets int, bookings []map[string]string, firstName string, lastName string, email string) []map[string]string {
+func bookTicket(userTickets int, firstName string, lastName string, email string) {
 	remainingTickets = remainingTickets - userTickets
 
 	// create a map for a user storing all their details
@@ -120,5 +120,5 @@ func bookTicket(userTickets int, bookings []map[string]string, firstName string,
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation mail at %v\n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets are remaining for the %v\n", remainingTickets, conferenceName)
 
-	return bookings
+	
 }
