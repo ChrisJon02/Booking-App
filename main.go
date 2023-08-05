@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"strconv"
 )
 
 //Package Level Variables
@@ -12,8 +12,8 @@ const conferenceTickets = 50
 var conferenceName = "Music Show"
 var remainingTickets int = 50
 
-// Declared a slice instead of array which is dynamic in size
-var bookings = []string{}
+// Declared an empty List of maps unnlike a single map
+var bookings = make([]map[string]string, 0)
 
 func main() {
 
@@ -75,22 +75,10 @@ func getFirstNames() []string {
 	//range for loop - a for loop to run through arrays, slices
 	// "_" is the blank identifier used when you don't need a particular variable
 	for _, booking := range bookings {
-		var names = strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+		firstNames = append(firstNames, booking["First name"])
 	}
 	return firstNames
 
-}
-
-// function to validate input data
-func validateInputData(firstName string, lastName string, email string, userTickets int) (bool, bool, bool, bool) {
-
-	isValidFirstName := len(firstName) >= 2
-	isValidLastName := len(lastName) >= 2
-	isValidEmail := strings.Contains(email, "@")
-	isValidTickets := userTickets > 0 && userTickets <= remainingTickets
-
-	return isValidFirstName, isValidLastName, isValidEmail, isValidTickets
 }
 
 // function to get user input
@@ -116,9 +104,18 @@ func getUserInput() (string, string, string, int) {
 	return firstName, lastName, email, userTickets
 }
 
-func bookTicket(userTickets int, bookings []string, firstName string, lastName string, email string) []string {
+func bookTicket(userTickets int, bookings []map[string]string, firstName string, lastName string, email string) []map[string]string {
 	remainingTickets = remainingTickets - userTickets
-	bookings = append(bookings, firstName+" "+lastName)
+
+	// create a map for a user storing all their details
+	var userData = make(map[string]string)
+	userData["First name"] = firstName
+	userData["Last name"] = lastName
+	userData["Email"] = email
+	userData["Number of Tickets"] = strconv.FormatInt(int64(userTickets), 10)
+
+	bookings = append(bookings, userData)
+	fmt.Printf("List of bookings : %v\n", bookings)
 
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation mail at %v\n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets are remaining for the %v\n", remainingTickets, conferenceName)
