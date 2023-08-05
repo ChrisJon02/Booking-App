@@ -1,9 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"strconv"
-)
+import "fmt"
 
 //Package Level Variables
 
@@ -12,8 +9,15 @@ const conferenceTickets = 50
 var conferenceName = "Music Show"
 var remainingTickets int = 50
 
-// Declared an empty List of maps unnlike a single map
-var bookings = make([]map[string]string, 0)
+// Declared a struct
+var bookings = make([]UserData, 0)
+
+type UserData struct {
+	FirstName       string
+	LastName        string
+	Email           string
+	NumberOfTickets int
+}
 
 func main() {
 
@@ -26,7 +30,7 @@ func main() {
 
 		if isValidFirstName && isValidLastName && isValidEmail && isValidTickets {
 
-			bookings = bookTicket(userTickets, bookings, firstName, lastName, email)
+			bookTicket(userTickets, firstName, lastName, email)
 			firstNames := getFirstNames()
 			fmt.Printf("The first names of bookings: %v\n", firstNames)
 
@@ -75,7 +79,7 @@ func getFirstNames() []string {
 	//range for loop - a for loop to run through arrays, slices
 	// "_" is the blank identifier used when you don't need a particular variable
 	for _, booking := range bookings {
-		firstNames = append(firstNames, booking["First name"])
+		firstNames = append(firstNames, booking.FirstName)
 	}
 	return firstNames
 
@@ -104,15 +108,16 @@ func getUserInput() (string, string, string, int) {
 	return firstName, lastName, email, userTickets
 }
 
-func bookTicket(userTickets int, bookings []map[string]string, firstName string, lastName string, email string) []map[string]string {
+func bookTicket(userTickets int, firstName string, lastName string, email string) {
 	remainingTickets = remainingTickets - userTickets
 
-	// create a map for a user storing all their details
-	var userData = make(map[string]string)
-	userData["First name"] = firstName
-	userData["Last name"] = lastName
-	userData["Email"] = email
-	userData["Number of Tickets"] = strconv.FormatInt(int64(userTickets), 10)
+	// create a struct for a user storing all their details
+	var userData = UserData{
+		FirstName:       firstName,
+		LastName:        lastName,
+		Email:           email,
+		NumberOfTickets: userTickets,
+	}
 
 	bookings = append(bookings, userData)
 	fmt.Printf("List of bookings : %v\n", bookings)
@@ -120,5 +125,4 @@ func bookTicket(userTickets int, bookings []map[string]string, firstName string,
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation mail at %v\n", firstName, lastName, userTickets, email)
 	fmt.Printf("%v tickets are remaining for the %v\n", remainingTickets, conferenceName)
 
-	return bookings
 }
